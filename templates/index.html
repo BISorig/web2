@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="../static/css/style.css">
+{% endblock %}
+
+
+{% block title %}
+    {% if current_user.is_authenticated %}
+        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+    {% else %}
+        <p>
+            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+            <a class="btn btn-success" href="/login">Войти</a>
+        </p>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+<br>
+<h1 align="center">Список работ</h1>
+
+<br><br>
+{% for item in jobs%}
+<div class="col-md6 border rounded">
+    <h2>Работа # {{item.id}}</h2>
+    <table class="table table-dark table-sm">
+
+        <tr>
+            <td>Название</td>
+            <td>Руководитель</td>
+            <td>Продолжительность</td>
+            <td>Список участников</td>
+            <td>Готовность</td>
+        </tr>
+        <tr>
+            <td>{{item.title}}</td>
+            <td>{{item.user.surname}} {{item.user.name}}</td>
+            <td>{{item.work_size}} часа(-ов)</td>
+            <td>{{item.collaborators}}</td>
+            <td>
+                {% if item.is_finished %}
+                    Работа завершена
+                {% else %}
+                    Работа не завершена
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div><br>
+{% endfor %}
+{% endblock %}
