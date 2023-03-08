@@ -103,8 +103,7 @@ def edit_jobs(id):
     form = JobsForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        job = db_sess.query(Jobs).filter(Jobs.id == id,
-                                         Jobs.user == current_user).first()
+        job = db_sess.query(Jobs).filter(Jobs.id == id).first()
         if job:
             form.team_leader.data = job.team_leader
             form.title.data = job.title
@@ -118,9 +117,8 @@ def edit_jobs(id):
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        job = db_sess.query(Jobs).filter(Jobs.id == id,
-                                          Jobs.user == current_user
-                                          ).first()
+
+        job = db_sess.query(Jobs).filter(Jobs.id == id).first()
         if job:
             job.team_leader = form.team_leader.data
             job.title = form.title.data
@@ -138,6 +136,19 @@ def edit_jobs(id):
                            title='Редактирование работы',
                            form=form
                            )
+
+
+@app.route('/jobs_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def jobs_delete(id):
+    db_sess = db_session.create_session()
+    job = db_sess.query(Jobs).filter(Jobs.id == id).first()
+    if job:
+        db_sess.delete(job)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
 
 
 @app.route("/")
