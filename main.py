@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect
 from flask_login import LoginManager
 from data.users import User
 from data import db_session
-from data.users import LoginForm
+from forms.user import LoginForm
 from flask_login import login_user, login_required, logout_user, current_user
 from forms.jobs import JobsForm
 from data.jobs import Jobs
@@ -103,7 +103,7 @@ def add_jobs():
 def index():
     db_sess = db_session.create_session()
     jobs = db_sess.query(Jobs)
-    return render_template("index.html", jobs=jobs)
+    return render_template("index.html", jobs=jobs, title='Главная страница')
 
 
 def main():

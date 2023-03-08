@@ -7,5 +7,8 @@ h4 {
 td {
     width: 100px;
     border-width: 1px;
+}
 
+a{
+    font-size: 50px;
 }
