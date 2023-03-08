@@ -1,27 +1,11 @@
 {% extends "base.html" %}
 
-
-{% block head %}
-    <link rel="stylesheet" href="../static/css/style.css">
-{% endblock %}
-
-
-{% block title %}
-    {% if current_user.is_authenticated %}
-        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
-    {% else %}
-        <p>
-            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-            <a class="btn btn-success" href="/login">Войти</a>
-        </p>
-    {% endif %}
-{% endblock %}
-
-
 {% block content %}
 <br>
 <h1 align="center">Список работ</h1>
-
+{% if current_user.is_authenticated %}
+    <a href="jobs" class="btn btn-secondary">Добавить новость</a>
+{% endif %}
 <br><br>
 {% for item in jobs%}
 <div class="col-md6 border rounded">
@@ -49,6 +33,16 @@
             </td>
         </tr>
     </table>
+    {% if current_user.is_authenticated and current_user.id in [item.user.id, 1] %}
+    <div>
+        <a href="/jobs/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/jobs_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+{% endif %}
 </div><br>
 {% endfor %}
 {% endblock %}

@@ -1,9 +1,6 @@
 import datetime
 import sqlalchemy
 from sqlalchemy import orm
-from flask_wtf import FlaskForm
-from wtforms import PasswordField, BooleanField, SubmitField, EmailField
-from wtforms.validators import DataRequired
 from .db_session import SqlAlchemyBase
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -25,6 +22,7 @@ class User(SqlAlchemyBase, UserMixin):
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                       default=datetime.datetime.now)
     job = orm.relationship("Jobs", back_populates='user')
+    departament = orm.relationship("Departament", back_populates="user")
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
